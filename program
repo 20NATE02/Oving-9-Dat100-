@@ -1,0 +1,69 @@
+class Questions:
+
+    def __init__(self, questions, answers, correct):
+        self.questions = questions
+        self.answers = answers
+        self.correct = correct
+
+    def __str__(self):
+        text = self.questions + "\n"
+        for num, alternative in enumerate(self.answers):
+            text += f"{num+1}: {alternative}\n"
+        return text
+    
+    def check_correct(self, correct):
+        if self.correct == correct:
+            return True
+        return False
+            
+    def correct_answer_text(self):
+        return self.answers[int(self.correct)]
+ 
+def read_file():
+
+    questions = []
+    
+    with open("sporsmaalsfil.txt", "r", encoding="UTF-8") as lf:
+        for line in lf:
+            answers, correct, slist = line.strip().split(":")
+            slist = slist.replace("[", "")
+            slist = slist.replace("]", "")
+            slist = slist.replace(" ", "")
+            slist = slist.split(",")
+            temp = Questions(answers, slist, correct)
+            questions.append(temp)
+            
+        return questions
+    
+if __name__ == "__main__":
+    read_questions = read_file()
+    n = 0
+    player1_count = 0
+    player2_count = 0
+
+    for questions in read_questions:
+        print("Answer the following questions: \n(The answers must be typed and are case sensitive)\n")
+        print(read_questions[n]) 
+        
+        player1_answer = input("Input Player 1's answer here: ")
+        player2_answer = input("Input Player 2's answer here: ")
+        
+        if player1_answer == read_questions[n].correct_answer_text():
+            player1_count += 1
+            print("\nPlayer 1's answer was correct! ")
+            
+        else:
+            print("\nPlayer 1's answer was incorrect ")
+                
+        if player2_answer == read_questions[n].correct_answer_text():
+            player2_count += 1
+            print("\nPlayer 2's answer was correct! ")
+            
+        else:
+            print("\nPlayer 2's answer was incorrect ")
+               
+        print("\nThe correct answer was ", read_questions[n].correct_answer_text())
+              
+        n+=1
+            
+        print(f"\nPlayer 1's score: {player1_count} out of {len(read_questions)} \nPlayer 2's score: {player2_count} out of {len(read_questions)}\nThank you for playing the quiz, have a good day!")
